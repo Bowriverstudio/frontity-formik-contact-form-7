@@ -1,0 +1,15 @@
+{
+	"name": "frontity-formik-contact-form-7",
+	"version": "0.1.0",
+	"description": "Formik For Frontity and contact form 7",
+	"keywords": [
+		"frontity formik",
+		"frontity-theme"
+	],
+	"homepage": "https://frontity.org",
+	"license": "Apache-2.0",
+	"bugs": {
+		"url": "https://community.frontity.org"
+	},
+	"dependencies": {}
+}
