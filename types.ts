@@ -4,15 +4,12 @@ export type SubmitFormikContactForm7 = {
   /**
    * Contact Form 7 ID
    */
-  id: number;
+  contactForm7id: number;
   /**
    * Values to submit to Contact Form7.
    */
   values: [];
-  /**
-   * Key used to store results.
-   */
-  key: string;
+
   /**
    * Formik Actions callback.
    */
@@ -20,20 +17,22 @@ export type SubmitFormikContactForm7 = {
 };
 
 type FormikResults = {
+
+  /**
+   * The form can be in one of the following states.
+   */
+  formikViewState: 'Form' | 'HasServerSideErrors' | 'Success';
+
   /**
    * The error message from server side validation.  Default is false.
    */
-  serverSideErrorMessage: string | boolean;
+  serverSideErrorMessage: string;
 
-  /**
-   * Successful message from server side.  Default is false.
-   */
-  successfulMessage: string | boolean;
 };
 
 type FormikMessagingArgs = {
-  key: string | number;
-  message: string | boolean;
+  contactForm7id: string | number;
+  message: string;
 };
 
 export interface FrontityFormik extends Package {
@@ -45,12 +44,13 @@ export interface FrontityFormik extends Package {
   };
   actions: {
     formik: {
+      initialState: Action<FrontityFormik, number>;
       submitFormikContactForm7: AsyncAction<
         FrontityFormik,
         SubmitFormikContactForm7
       >;
       setServerSideErrorMessage: Action<FrontityFormik, FormikMessagingArgs>;
-      setSuccessfulMessage: Action<FrontityFormik, FormikMessagingArgs>;
+      setSuccessful: Action<FrontityFormik, number>;
     };
   };
 }

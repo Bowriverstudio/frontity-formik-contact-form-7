@@ -1,4 +1,4 @@
-import { FrontityFormik } from "../types";
+import { FrontityFormik, SubmitFormikContactForm7 } from "../types";
 
 const MyForm: FrontityFormik = {
   name: "frontity-formik",
@@ -10,35 +10,41 @@ const MyForm: FrontityFormik = {
   },
   actions: {
     formik: {
-      setServerSideErrorMessage: ({ state }) => ({ key, message }) => {
-        state.formik.results[key].serverSideErrorMessage = message;
+
+      initialState: ({ state }) => (contactForm7id: number) => {
+
+        state.formik.results[contactForm7id] = {
+          formikViewState: "Form",
+          serverSideErrorMessage: "",
+        }
       },
-      setSuccessfulMessage: ({ state }) => ({ key, message }) => {
-        state.formik.results[key].successfulMessage = message;
+
+      setServerSideErrorMessage: ({ state }) => ({ contactForm7id, message }) => {
+        state.formik.results[contactForm7id] = {
+          formikViewState: "Form",
+          serverSideErrorMessage: message,
+        }
       },
-      submitFormikContactForm7: ({ actions }) => async (params) => {
-        const { id, key, formikActions, values } = params;
+      setSuccessful: ({ state }) => (contactForm7id: number) => {
+        state.formik.results[contactForm7id].formikViewState = 'Success';
+      },
+      submitFormikContactForm7: ({ actions }) => async (params: SubmitFormikContactForm7) => {
+        const { contactForm7id, formikActions, values } = params;
+        const id = contactForm7id
 
         const submitContactForm7 = actions.contactForm7.submitContactForm7;
-        const setSuccessfulMessage = actions.formik.setSuccessfulMessage;
+        const setSuccessful = actions.formik.setSuccessful;
         const setServerSideErrorMessage =
           actions.formik.setServerSideErrorMessage;
-
         submitContactForm7({ values, id })
           .then((message) => {
             formikActions.setStatus({ success: true });
-            setServerSideErrorMessage({ key, message: false });
-            setSuccessfulMessage({
-              key,
-              message: "Thank you for joining the waiting list.",
-            });
-            // TODO why is message unknown.
+            setSuccessful(id);
           })
           .catch((error) => {
-            setServerSideErrorMessage({ key, message: error.message });
-            setSuccessfulMessage({ key, message: false });
-            Object.entries(error.invalid_fields).map(([key, value]) => {
-              formikActions.setFieldError(key, value.message);
+            setServerSideErrorMessage({ id, message: error.message });
+            Object.entries(error.invalid_fields).map(([id, value]) => {
+              formikActions.setFieldError(id, value.message);
             });
             formikActions.setStatus({
               error: error.message,
